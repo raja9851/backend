@@ -1,9 +1,15 @@
 # filename: auth.py
 import requests
+import os
 
 class UpstoxAuth:
     def __init__(self):
-        self.access_token = 'eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIzTUNUM1MiLCJqdGkiOiI2OTljOGQ0NTA0NTQxZTc2ZWRkMzI2NGYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6ZmFsc2UsImlhdCI6MTc3MTg2NzQ2MSwiaXNzIjoidWRhcGktZ2F0ZXdheS1zZXJ2aWNlIiwiZXhwIjoxNzcxODg0MDAwfQ.WujS_6rw48qh7M40K-DzEBVKA_BZRiorUPJQa62zE18'
+        self.access_token = os.getenv('UPSTOX_ACCESS_TOKEN', '')
+        
+        if not self.access_token:
+            print("⚠️ WARNING: UPSTOX_ACCESS_TOKEN environment variable not set!")
+        else:
+            print("✅ Access token loaded from environment")
     
     def get_access_token(self):
         """Get current access token"""
@@ -32,6 +38,7 @@ class UpstoxAuth:
     def update_token(self, new_token):
         """Update access token"""
         self.access_token = new_token
+        os.environ['UPSTOX_ACCESS_TOKEN'] = new_token
         print(f"✅ Access token updated")
 
 # Global auth instance
